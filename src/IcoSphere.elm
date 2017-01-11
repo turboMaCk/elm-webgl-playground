@@ -1,15 +1,10 @@
 module IcoSphere exposing (sphere)
 
-import Math.Vector3 as Vec3 exposing (vec3, Vec3)
+import Math.Vector3 as Vec3 exposing (vec3, Vec3, toTuple, length)
 
 
 type alias Face =
     ( Vec3, Vec3, Vec3 )
-
-
-sphere : Int -> List Face
-sphere subdivisions =
-    icotris1 |> subdivide subdivisions
 
 
 icotris1 : List Face
@@ -87,12 +82,12 @@ midPoint : Vec3 -> Vec3 -> Vec3
 midPoint a b =
     let
         ( x1, y1, z1 ) =
-            Vec3.toTuple a
+            toTuple a
 
         ( x2, y2, z2 ) =
-            Vec3.toTuple b
+            toTuple b
     in
-        vec3 ((x1 - x2) / 2) ((y1 - y2) / 2) ((z1 - z2) / 2)
+        vec3 ((x1 + x2) / 2) ((y1 + y2) / 2) ((z1 + z2) / 2)
 
 
 subdivide : Int -> List Face -> List Face
@@ -118,4 +113,31 @@ subdivide times faces =
         if times <= 0 then
             faces
         else
-            subdivide (times - 2) (List.concatMap subdivideFaces faces)
+            subdivide (times - 1) (List.concatMap subdivideFaces faces)
+
+
+normalize : Vec3 -> Vec3
+normalize p =
+    let
+        l =
+            length p
+
+        ( x, y, z ) =
+            toTuple p
+    in
+        vec3 (x / l) (y / l) (z / l)
+
+
+normalizeFace : Face -> Face
+normalizeFace ( a, b, c ) =
+    ( normalize a
+    , normalize b
+    , normalize c
+    )
+
+
+sphere : Int -> List Face
+sphere subdivisions =
+    icotris1
+        |> subdivide subdivisions
+        |> List.map normalizeFace

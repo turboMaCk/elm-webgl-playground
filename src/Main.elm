@@ -79,8 +79,7 @@ type alias Vertex =
 
 sphereMesh : Mesh Vertex
 sphereMesh =
-    IcoSphere.sphere 10
-        -- |> List.concat
+    IcoSphere.sphere 3
         |>
             List.map
                 (\( a, b, c ) ->
