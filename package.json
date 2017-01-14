@@ -1,0 +1,15 @@
+{
+  "name": "elm-webgl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node_modules/.bin/elm-live src/Main.elm",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marek Fajkus",
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "elm-live": "^2.7.4"
+  }
+}
