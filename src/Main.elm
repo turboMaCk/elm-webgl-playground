@@ -60,10 +60,9 @@ type alias Uniforms =
 uniforms : Float -> Uniforms
 uniforms theta =
     { rotation =
-          Mat4.identity
-        -- Mat4.mul
-        --     (Mat4.makeRotate (3 * theta) (vec3 0 1 0))
-        --     (Mat4.makeRotate (2 * theta) (vec3 1 0 0))
+        Mat4.mul
+            (Mat4.makeRotate (3 * theta) (vec3 0 1 0))
+            (Mat4.makeRotate (2 * theta) (vec3 1 0 0))
     , perspective = Mat4.makePerspective 45 1 0.01 100
     , camera = Mat4.makeLookAt (vec3 0 0 50) (vec3 0 0 0) (vec3 0 1 0)
     , time = theta
@@ -315,7 +314,7 @@ void main () {
     // get a 3d noise using the position, low frequency
     float b = 5.0 * pnoise( 0.05 * position, vec3( 100.0 ) );
     // compose both noises
-    float displacement = - 1.1 * (noise * time) + b;
+    float displacement = - 8.5 * noise + b;
 
 
     // move the position along the normal and transform it
